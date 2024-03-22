@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <title>Nuclia Sample App</title>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script src="https://cdn.nuclia.cloud/nuclia-video-widget.umd.js"></script>
+    <nuclia-search-bar 
+      knowledgebox="f08a00d7-4348-4730-9b77-7fa0bc21851c"
+      zone="aws-us-east-2-1"
+      features="answers,useSynonyms,permalink,navigateToLink,navigateToFile" 
+      generativemodel="chatgpt-azure-3"
+      state="PRIVATE"
+      account="0b565f7e-9b58-419b-9e1d-83e1e138bff8"
+      kbslug="basic"
+      apikey="process.env['TOKEN']"></nuclia-search-bar>
+        <nuclia-search-results ></nuclia-search-results>
   </body>
 </html>

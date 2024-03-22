@@ -1,47 +1,57 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+export default {
+    onMounted() {
+        window.selectedModel = this.selectedModel;
+    },
+
+    methods: {
+        async getModels() {
+            const response = await fetch('https://api.nuclia.cloud/api/v1/models');
+            const data = await response.json();
+            this.models = data.models;
+        },
+        changeModel(event) {
+          window.selectedModel = this.selectedModel;
+          document.querySelector("body > nuclia-search-bar").setAttribute("generativemodel", this.selectedModel);
+          document.querySelector("body > nuclia-search-bar").setAttribute("apiKey", process.env['TOKEN']);
+        }
+    },
+    data() {
+        return {
+            models: [
+                {key: 1, name: "chatgpt-azure"},
+                {key: 2, name: "chatgpt-azure-3"},
+                {key: 3, name: "Claude-3"},
+                {key: 4, name: "gemini-pro"},
+            ],
+            selectedModel: "chatgpt-azure-3"
+        }
+    }
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div id="app">
+    <h1>To use the search, please select an engine first</h1>
+      <div style="padding: 20px">
+          <select v-model="selectedModel" @change="changeModel($event)">
+              // eslint-disable-next-line vue/require-v-for-key
+              <option v-for="model in models" :value="model.name" v-bind="model.key">{{model.name}}</option>
+          </select>
+          <div style="padding: 20px">Selected model key: {{selectedModel}}</div>
+      </div>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+h1 {
+  font-weight: 500;
+  font-size: 2.6rem;
+  position: relative;
+  top: -10px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+h3 {
+  font-size: 1.2rem;
 }
 </style>
